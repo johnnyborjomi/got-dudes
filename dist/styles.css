@@ -7,7 +7,8 @@
 
 body {
   font-family: "Gamja Flower", Arial, Helvetica, sans-serif;
-  background: gainsboro; }
+  background: gainsboro;
+  font-size: 20px; }
 
 h1 {
   text-align: center; }
@@ -29,5 +30,7 @@ h5 {
   align-items: center;
   justify-content: center;
   padding: 0 40px; }
+  .app-title {
+    margin: 20px 0; }
 
 /*# sourceMappingURL=styles.css.map*/
