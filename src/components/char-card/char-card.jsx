@@ -10,7 +10,7 @@ function Allegiances(props) {
           ? "Loading..."
           : houseNames.map(houseName => {
               return (
-                <li key={houseName}>
+                <li key={houseName.name}>
                   <a href="#">{houseName.name}</a>
                 </li>
               );

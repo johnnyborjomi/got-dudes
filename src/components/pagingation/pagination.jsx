@@ -1,13 +1,10 @@
 import * as React from "react";
 
-const pagesToShow = 10;
+const pagesToShow = 7;
 
 export class Pagination extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      currentPage: 1
-    };
     this.handlePageClick = this.handlePageClick.bind(this);
   }
 
@@ -15,15 +12,22 @@ export class Pagination extends React.Component {
     this.props.onPageClick(e);
   }
 
+  pagesRange() {
+    if (this.props.currentPage <= (pagesToShow - (pagesToShow % 2)) / 2) {
+      return 1;
+    } else {
+      return this.props.currentPage - (pagesToShow - (pagesToShow % 2)) / 2;
+    }
+  }
+
   render() {
     let pages = [];
-    for (
-      let i = this.state.currentPage;
-      i < this.state.currentPage + pagesToShow;
-      i++
-    ) {
+    for (let i = this.pagesRange(); i < this.pagesRange() + pagesToShow; i++) {
       pages.push(
-        <span key={i} className={this.props.currentPage === i ? "active" : ""}>
+        <span
+          key={Math.random() * i}
+          className={this.props.currentPage === i ? "active" : ""}
+        >
           {i}
         </span>
       );

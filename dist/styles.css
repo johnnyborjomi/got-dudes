@@ -35,7 +35,8 @@ h5 {
 
 .characters {
   display: grid;
-  grid-template-columns: 1fr 1fr; }
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 110px; }
   @media screen and (max-width: 840px) {
     .characters {
       grid-template-columns: 1fr; } }
