@@ -1,7 +1,9 @@
 import * as React from "react";
+import { HashRouter as Router, Route, Link } from "react-router-dom";
 
 function Allegiances(props) {
   let { houseNames, isFetching } = props;
+  console.log(houseNames);
   if (houseNames.length > 0) {
     let charProps = (
       <div className="char-card_prop">
@@ -11,7 +13,7 @@ function Allegiances(props) {
           : houseNames.map(houseName => {
               return (
                 <li key={houseName.name}>
-                  <a href="#">{houseName.name}</a>
+                  <Link to="/allegiance">{houseName.name}</Link>
                 </li>
               );
             })}
@@ -87,6 +89,7 @@ export class CharCard extends React.Component {
           houseNames={houseNames}
           isFetching={this.state.isHouseFetching}
         />
+        <Route path="/allegiances" render={() => <h1>Allegiance</h1>} />
       </div>
     );
   }

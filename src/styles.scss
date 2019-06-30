@@ -21,13 +21,15 @@ body {
 }
 
 .app {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 0 40px;
   &-title {
     margin: 20px 0;
   }
+}
+.char-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .characters {
   display: grid;
