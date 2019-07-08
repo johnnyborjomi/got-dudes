@@ -2,8 +2,7 @@ import * as React from "react";
 import { CharCard } from "../char-card/char-card";
 import { Pagination } from "../pagingation/pagination";
 import { HashRouter as Router, Route, Link } from "react-router-dom";
-
-const apiUrl = "https://www.anapioficeandfire.com/api";
+import { apiUrl } from "../../config";
 
 export class CharList extends React.Component {
   constructor(props) {
@@ -12,20 +11,16 @@ export class CharList extends React.Component {
     this.state = {
       data: [],
       isFetching: true,
-      error: null,
-      page: this.props.page
+      error: null
     };
-    this.prevPage = 1;
-    this.onPageClick = this.onPageClick.bind(this);
+    this.prevPage = 0;
   }
 
   getCharacters() {
     this.setState({ isFetching: true });
-    fetch(`${apiUrl}/characters?page=${this.state.page}&pageSize=30`)
+    fetch(`${apiUrl}/characters?page=${this.props.match.params.page}&pageSize=30`)
       .then(res => res.json())
-      .then(result =>
-        this.setState(state => ({ data: result, isFetching: false }))
-      );
+      .then(result => this.setState(state => ({ data: result, isFetching: false })));
   }
 
   componentDidMount() {
@@ -33,15 +28,10 @@ export class CharList extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.page !== this.prevPage) {
+    if (this.props.match.params.page !== this.prevPage) {
       this.getCharacters();
-      this.prevPage = this.state.page;
+      this.prevPage = this.props.match.params.page;
     }
-  }
-
-  onPageClick(e) {
-    e.persist();
-    this.setState(state => ({ page: Number(e.target.innerText) }));
   }
 
   render() {
@@ -55,10 +45,7 @@ export class CharList extends React.Component {
               return <CharCard key={i} character={character} />;
             })}
           </div>
-          <Pagination
-            currentPage={this.state.page}
-            onPageClick={this.onPageClick}
-          />
+          <Pagination currentPage={this.props.match.params.page} />
         </div>
       );
     }

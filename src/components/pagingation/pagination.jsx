@@ -1,15 +1,10 @@
 import * as React from "react";
-
+import { Link } from "react-router-dom";
 const pagesToShow = 7;
 
 export class Pagination extends React.Component {
   constructor(props) {
     super(props);
-    this.handlePageClick = this.handlePageClick.bind(this);
-  }
-
-  handlePageClick(e) {
-    this.props.onPageClick(e);
   }
 
   pagesRange() {
@@ -21,21 +16,19 @@ export class Pagination extends React.Component {
   }
 
   render() {
+    console.log(this.props.currentPage);
     let pages = [];
     for (let i = this.pagesRange(); i < this.pagesRange() + pagesToShow; i++) {
       pages.push(
-        <span
-          key={Math.random() * i}
-          className={this.props.currentPage === i ? "active" : ""}
+        <Link
+          to={`/characters/${i}`}
+          key={i}
+          className={this.props.currentPage === String(i) ? "active" : ""}
         >
           {i}
-        </span>
+        </Link>
       );
     }
-    return (
-      <div className="pagination" onClick={this.handlePageClick}>
-        {pages}
-      </div>
-    );
+    return <div className="pagination">{pages}</div>;
   }
 }

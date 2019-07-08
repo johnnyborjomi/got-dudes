@@ -1,27 +1,28 @@
 import * as React from "react";
 import { HashRouter as Router, Route, Link } from "react-router-dom";
+import { apiUrl } from "../../config";
+import { getHouses } from "../../got.service";
+
+function Allegiance(props) {
+  let { house } = props;
+  let url = house.url.replace(apiUrl, "");
+  return (
+    <li key={house.name}>
+      <Link to={url}>{house.name}</Link>
+    </li>
+  );
+}
 
 function Allegiances(props) {
   let { houseNames, isFetching } = props;
-  console.log(houseNames);
+
   if (houseNames.length > 0) {
-    let charProps = (
-      <div className="char-card_prop">
-        Allegiances:{" "}
-        {isFetching
-          ? "Loading..."
-          : houseNames.map(houseName => {
-              return (
-                <li key={houseName.name}>
-                  <Link to="/allegiance">{houseName.name}</Link>
-                </li>
-              );
-            })}
-      </div>
-    );
     return (
       <div className="char-card_prop">
-        <ul>{charProps}</ul>
+        Allegiances:{" "}
+        <ul className="char-card_prop">
+          {isFetching ? "Loading..." : houseNames.map(house => <Allegiance house={house} />)}
+        </ul>
       </div>
     );
   }
@@ -45,22 +46,8 @@ export class CharCard extends React.Component {
     };
   }
 
-  async getHouses() {
-    let allegiances = this.props.character.allegiances;
-    let houses = [];
-
-    if (allegiances.length > 0) {
-      houses = this.props.character.allegiances.map(async allegiance => {
-        return await fetch(allegiance).then(data => data.json());
-      });
-      return Promise.all(houses);
-    }
-
-    return houses;
-  }
-
   componentDidMount() {
-    this.getHouses().then(houseNames => {
+    getHouses(this.props.character).then(houseNames => {
       this.setState({ houseNames: houseNames, isHouseFetching: false });
     });
   }
@@ -72,23 +59,12 @@ export class CharCard extends React.Component {
     return (
       <div className="char-card">
         <div className="icon">{charProps.gender === "Male" ? "🙎🏻‍♂️" : "🙎🏻‍♀️"}</div>
-        <h2 className="char-card_prop">
-          {charProps.name ? charProps.name : "noname"}
-        </h2>
-        <div className="char-card_prop">
-          Born: {charProps.born ? charProps.born : "n/a"}
-        </div>
-        <div className="char-card_prop">
-          Died: {charProps.died ? charProps.died : "n/a"}
-        </div>
-        <div className="char-card_prop">
-          Gender: {charProps.gender ? charProps.gender : "n/a"}
-        </div>
+        <h2 className="char-card_prop">{charProps.name ? charProps.name : "noname"}</h2>
+        <div className="char-card_prop">Born: {charProps.born ? charProps.born : "n/a"}</div>
+        <div className="char-card_prop">Died: {charProps.died ? charProps.died : "n/a"}</div>
+        <div className="char-card_prop">Gender: {charProps.gender ? charProps.gender : "n/a"}</div>
         <Titles titles={charProps.titles} />
-        <Allegiances
-          houseNames={houseNames}
-          isFetching={this.state.isHouseFetching}
-        />
+        <Allegiances houseNames={houseNames} isFetching={this.state.isHouseFetching} />
         <Route path="/allegiances" render={() => <h1>Allegiance</h1>} />
       </div>
     );

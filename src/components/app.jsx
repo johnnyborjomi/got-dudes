@@ -1,6 +1,7 @@
 import * as React from "react";
 import { CharList } from "./char-list/char-list";
-import { HashRouter as Router, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Route, Link, Redirect, Switch } from "react-router-dom";
+import HousePage from "./house-page/house-page";
 
 export class App extends React.Component {
   constructor(props) {
@@ -11,13 +12,17 @@ export class App extends React.Component {
   render() {
     return (
       <Router>
-        <Link to={"/"}>Home</Link>
+        <Redirect from="/" to="/characters" />
+        <Redirect from="/characters" to="/characters/1" />
+
         <Route
-          path="/"
+          path="/characters/:page"
           exact
           //todo: Lift up page state
-          render={() => <CharList page={this.state.charListPage} />}
+          component={CharList}
         />
+        <Route path="/character/:id" render={({ match }) => <div>{match.params.id}</div>} />
+        <Route path="/houses/:id" component={HousePage} />
       </Router>
     );
   }
