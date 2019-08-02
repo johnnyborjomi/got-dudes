@@ -9,6 +9,7 @@ export async function getHouses({ allegiances }) {
   return houses;
 }
 
-export async function getItem(url) {
+export async function getItem(url, signal) {
+  if (signal) return fetch(url, { signal: signal }).then(data => data.json());
   return fetch(url).then(data => data.json());
 }

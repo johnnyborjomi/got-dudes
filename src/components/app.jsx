@@ -2,6 +2,7 @@ import * as React from "react";
 import { CharList } from "./char-list/char-list";
 import { HashRouter as Router, Route, Link, Redirect, Switch } from "react-router-dom";
 import HousePage from "./house-page/house-page";
+import { CharCardByUrl } from "./char-card/char-card";
 
 export class App extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export class App extends React.Component {
           //todo: Lift up page state
           component={CharList}
         />
-        <Route path="/character/:id" render={({ match }) => <div>{match.params.id}</div>} />
+        <Route path="/character/:id" component={CharCardByUrl} />
         <Route path="/houses/:id" component={HousePage} />
       </Router>
     );

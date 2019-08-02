@@ -3,19 +3,23 @@ import { getItem } from "../../got.service";
 import { apiUrl } from "../../config";
 import { Link } from "react-router-dom";
 
-function CurrentLordLink(props) {
-  const [currLord, setCurrLord] = useState(null);
-  const currLordId = props.currLord.replace(apiUrl + "/characters/", "");
+function CharacterLink(props) {
+  const [character, setcharacter] = useState(null);
+  const characterId = props.character.replace(apiUrl + "/characters/", "");
 
   useEffect(() => {
+    const abortController = new AbortController();
     (async () => {
-      const result = await getItem(props.currLord);
-
-      setCurrLord(result);
+      const result = await getItem(props.character, abortController.signal);
+      setcharacter(result);
     })();
+
+    return function cleanup() {
+      abortController.abort();
+    };
   }, []);
 
-  return <Link to={"/character/:" + currLordId}>Lord</Link>;
+  return <Link to={"/character/:" + characterId}>{character ? character.name : "...Loading"}</Link>;
 }
 
 export default function HousePage({ match }) {
@@ -43,7 +47,7 @@ export default function HousePage({ match }) {
   } else {
     return (
       <div>
-        <Link to={"/"} className="breadcrumb">
+        <Link to={"/characters/1"} className="breadcrumb">
           Home
         </Link>
 
@@ -52,10 +56,12 @@ export default function HousePage({ match }) {
           <h2 className="house-card_prop">{house.name ? house.name : "noname"}</h2>
           <div className="house-card_prop">Region: {house.region ? house.region : "n/a"}</div>
           <div className="house-card_prop">Words: {house.words ? house.words : "n/a"}</div>
-          <div className="house-card_prop">Founder: {house.founder ? house.founder : "n/a"}</div>
+          <div className="house-card_prop">
+            Founder: {house.founder ? <CharacterLink character={house.founder} /> : "n/a"}
+          </div>
           <div className="house-card_prop">
             Current Lord:{" "}
-            {house.currentLord ? <CurrentLordLink currLord={house.currentLord} /> : "n/a"}
+            {house.currentLord ? <CharacterLink character={house.currentLord} /> : "n/a"}
           </div>
         </div>
       </div>
