@@ -10,6 +10,7 @@ export async function getHouses({ allegiances }) {
 }
 
 export async function getItem(url, signal) {
-  if (signal) return fetch(url, { signal: signal }).then(data => data.json());
+  if (signal && signal instanceof AbortController)
+    return fetch(url, { signal: signal }).then(data => data.json());
   return fetch(url).then(data => data.json());
 }

@@ -3,34 +3,7 @@ import { HashRouter as Router, Route, Link } from "react-router-dom";
 import { apiUrl } from "../../config";
 import { getHouses } from "../../got.service";
 import { getItem } from "../../got.service";
-
-function Allegiance(props) {
-  let { house } = props;
-  let url = house.url.replace(apiUrl, "");
-  return (
-    <li key={house.name}>
-      <Link to={url}>{house.name}</Link>
-    </li>
-  );
-}
-
-function Allegiances(props) {
-  let { houseNames, isFetching } = props;
-
-  if (houseNames.length > 0) {
-    return (
-      <div className="char-card_prop">
-        Allegiances:{" "}
-        <ul className="char-card_prop">
-          {isFetching
-            ? "Loading..."
-            : houseNames.map((house, i) => <Allegiance house={house} key={i} />)}
-        </ul>
-      </div>
-    );
-  }
-  return "";
-}
+import { Allegiances } from "../allegiances/allegiances";
 
 function Titles(props) {
   if (props.titles == undefined || props.titles[0] == "") return "";
@@ -111,7 +84,9 @@ export class CharCardByUrl extends React.Component {
 
     return (
       <div>
-        <Link to={"/characters/1"}>Home</Link>
+        <Link to={"/characters/1"} className={"breadcrumb"}>
+          Home
+        </Link>
         <CharProps
           charProps={charProps}
           houseNames={houseNames}
