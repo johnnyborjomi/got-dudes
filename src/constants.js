@@ -1,0 +1,1 @@
+export const CHANGE_CHAR_LIST_PAGE_NUM = "CHAR_LIST_PAGE_NUM";

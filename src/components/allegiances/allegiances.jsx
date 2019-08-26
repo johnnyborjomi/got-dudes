@@ -1,10 +1,10 @@
 import React from "react";
-import { apiUrl } from "../../config";
+import { API_URL } from "../../config";
 import { Link } from "react-router-dom";
 
 function Allegiance(props) {
   let { house } = props;
-  let url = house.url.replace(apiUrl, "");
+  let url = house.url.replace(API_URL, "");
   return (
     <li key={house.name}>
       <Link to={url}>{house.name}</Link>

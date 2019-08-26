@@ -1,8 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { changeCharListPage } from "../../actions/actionCreator";
+
 const pagesToShow = 7;
 
-export class Pagination extends React.Component {
+class Pagination extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -15,20 +18,38 @@ export class Pagination extends React.Component {
     }
   }
 
+  handleClick = ({ currentTarget }) => {
+    console.log(currentTarget.dataset.key);
+    changeCharListPage(currentTarget.dataset.key);
+  };
+
   render() {
-    console.log(this.props.currentPage);
+    const { currentPage, dispatch } = this.props;
+
+    console.log(currentPage);
     let pages = [];
     for (let i = this.pagesRange(); i < this.pagesRange() + pagesToShow; i++) {
       pages.push(
-        <Link
-          to={`/characters/${i}`}
+        <div
           key={i}
-          className={this.props.currentPage === String(i) ? "active" : ""}
+          onClick={event => {
+            console.log(event.currentTarget.dataset.key);
+            dispatch(changeCharListPage(event.currentTarget.dataset.key));
+          }}
+          data-key={i}
         >
-          {i}
-        </Link>
+          <Link to={`/characters/${i}`} className={currentPage == i ? "active" : ""}>
+            {i}
+          </Link>
+        </div>
       );
     }
     return <div className="pagination">{pages}</div>;
   }
 }
+
+function mapStateToProps(state) {
+  return { currentPage: state.charListPageNum.charListPageNum };
+}
+
+export default connect(mapStateToProps)(Pagination);

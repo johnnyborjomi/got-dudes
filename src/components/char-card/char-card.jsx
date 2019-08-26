@@ -1,6 +1,6 @@
-import * as React from "react";
+import React, { Fragment } from "react";
 import { HashRouter as Router, Route, Link } from "react-router-dom";
-import { apiUrl } from "../../config";
+import { API_URL } from "../../config";
 import { getHouses } from "../../got.service";
 import { getItem } from "../../got.service";
 import { Allegiances } from "../allegiances/allegiances";
@@ -71,7 +71,7 @@ export class CharCardByUrl extends React.Component {
 
   componentDidMount() {
     console.log(this.props.match);
-    getItem(apiUrl + "/characters/" + this.props.match.params.id.replace(":", "")).then(char => {
+    getItem(API_URL + "/characters/" + this.props.match.params.id.replace(":", "")).then(char => {
       getHouses(char).then(houseNames => {
         this.setState({ houseNames: houseNames, isHouseFetching: false, char: char });
       });
@@ -79,20 +79,15 @@ export class CharCardByUrl extends React.Component {
   }
 
   render() {
-    let charProps = this.state.char;
-    let houseNames = this.state.houseNames;
+    const { char, houseNames, isHouseFetching } = this.state;
 
     return (
-      <div>
+      <Fragment>
         <Link to={"/characters/1"} className={"breadcrumb"}>
           Home
         </Link>
-        <CharProps
-          charProps={charProps}
-          houseNames={houseNames}
-          isHouseFetching={this.state.isHouseFetching}
-        />
-      </div>
+        <CharProps charProps={char} houseNames={houseNames} isHouseFetching={isHouseFetching} />
+      </Fragment>
     );
   }
 }

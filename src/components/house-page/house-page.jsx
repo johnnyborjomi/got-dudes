@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { getItem } from "../../got.service";
-import { apiUrl } from "../../config";
+import { API_URL } from "../../config";
 import { Link } from "react-router-dom";
 
 function CharacterLink(props) {
   const [character, setcharacter] = useState(null);
-  const characterId = props.character.replace(apiUrl + "/characters/", "");
+  const characterId = props.character.replace(API_URL + "/characters/", "");
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -23,7 +23,7 @@ function CharacterLink(props) {
 }
 
 export default function HousePage({ match }) {
-  let houseUrl = apiUrl + "/houses/" + match.params.id;
+  let houseUrl = API_URL + "/houses/" + match.params.id;
 
   const [house, setHouse] = useState(null);
 
@@ -37,16 +37,16 @@ export default function HousePage({ match }) {
 
   if (!house) {
     return (
-      <div>
+      <Fragment>
         <Link to={"/"} className="breadcrumb">
           Home
         </Link>
         ...Loading
-      </div>
+      </Fragment>
     );
   } else {
     return (
-      <div>
+      <Fragment>
         <Link to={"/characters/1"} className="breadcrumb">
           Home
         </Link>
@@ -64,7 +64,7 @@ export default function HousePage({ match }) {
             {house.currentLord ? <CharacterLink character={house.currentLord} /> : "n/a"}
           </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
