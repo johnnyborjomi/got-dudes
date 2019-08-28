@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { HashRouter as Router, Route, Link } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import { API_URL } from "../../config";
 import { getHouses } from "../../got.service";
 import { getItem } from "../../got.service";
@@ -25,7 +25,6 @@ function CharProps(props) {
       <div className="char-card_prop">Gender: {charProps.gender ? charProps.gender : "n/a"}</div>
       <Titles titles={charProps.titles} />
       <Allegiances houseNames={houseNames} isFetching={isHouseFetching} />
-      <Route path="/allegiances" render={() => <h1>Allegiance</h1>} />
     </div>
   );
 }
@@ -83,7 +82,7 @@ export class CharCardByUrl extends React.Component {
 
     return (
       <Fragment>
-        <Link to={"/characters/1"} className={"breadcrumb"}>
+        <Link to={`/characters/${this.props.currentPage}`} className={"breadcrumb"}>
           Home
         </Link>
         <CharProps charProps={char} houseNames={houseNames} isHouseFetching={isHouseFetching} />

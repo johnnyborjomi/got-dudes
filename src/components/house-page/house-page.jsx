@@ -22,7 +22,8 @@ function CharacterLink(props) {
   return <Link to={"/character/:" + characterId}>{character ? character.name : "...Loading"}</Link>;
 }
 
-export default function HousePage({ match }) {
+export default function HousePage(props) {
+  const match = props.match;
   let houseUrl = API_URL + "/houses/" + match.params.id;
 
   const [house, setHouse] = useState(null);
@@ -38,7 +39,7 @@ export default function HousePage({ match }) {
   if (!house) {
     return (
       <Fragment>
-        <Link to={"/"} className="breadcrumb">
+        <Link to={`/characters/${props.currentPage}`} className="breadcrumb">
           Home
         </Link>
         ...Loading
@@ -47,7 +48,7 @@ export default function HousePage({ match }) {
   } else {
     return (
       <Fragment>
-        <Link to={"/characters/1"} className="breadcrumb">
+        <Link to={`/characters/${props.currentPage}`} className="breadcrumb">
           Home
         </Link>
 

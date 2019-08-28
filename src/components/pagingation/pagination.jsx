@@ -19,25 +19,16 @@ class Pagination extends React.Component {
   }
 
   handleClick = ({ currentTarget }) => {
-    console.log(currentTarget.dataset.key);
-    changeCharListPage(currentTarget.dataset.key);
+    this.props.dispatch(changeCharListPage(currentTarget.dataset.key));
   };
 
   render() {
     const { currentPage, dispatch } = this.props;
 
-    console.log(currentPage);
     let pages = [];
     for (let i = this.pagesRange(); i < this.pagesRange() + pagesToShow; i++) {
       pages.push(
-        <div
-          key={i}
-          onClick={event => {
-            console.log(event.currentTarget.dataset.key);
-            dispatch(changeCharListPage(event.currentTarget.dataset.key));
-          }}
-          data-key={i}
-        >
+        <div key={i} onClick={this.handleClick} data-key={i}>
           <Link to={`/characters/${i}`} className={currentPage == i ? "active" : ""}>
             {i}
           </Link>
