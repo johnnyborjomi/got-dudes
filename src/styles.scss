@@ -63,6 +63,13 @@ body {
   &_prop {
   }
 
+  ul {
+    background: rgba(196, 174, 144, 0.7);
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 8px;
+  }
+
   li {
     margin-left: 20px;
   }

@@ -57,6 +57,12 @@ h5 {
   background-color: lemonchiffon;
   border-radius: 4px;
   padding: 10px; }
+  .char-card ul,
+  .house-card ul {
+    background: rgba(196, 174, 144, 0.7);
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 8px; }
   .char-card li,
   .house-card li {
     margin-left: 20px; }

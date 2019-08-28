@@ -1,12 +1,19 @@
 import React, { Fragment } from "react";
-import { Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { API_URL } from "../../config";
 import { getHouses } from "../../got.service";
 import { getItem } from "../../got.service";
 import { Allegiances } from "../allegiances/allegiances";
 
 function Titles(props) {
-  if (props.titles == undefined || props.titles[0] == "") return "";
+  if (props.titles == undefined)
+    return (
+      <ul>
+        Titles: <li>Loading...</li>
+      </ul>
+    );
+  if (props.titles[0] == "") return "";
+
   let titles = props.titles.map(title => {
     return <li key={title}>{title}</li>;
   });
@@ -14,7 +21,11 @@ function Titles(props) {
 }
 
 function CharProps(props) {
-  const { charProps, houseNames, isHouseFetching } = props;
+  const { charProps, houseNames, isHouseFetching, isCharPropsFetching } = props;
+
+  if (isCharPropsFetching) {
+    charProps.born = charProps.died = charProps.gender = "Loading...";
+  }
 
   return (
     <div className="char-card">
@@ -64,7 +75,8 @@ export class CharCardByUrl extends React.Component {
     this.state = {
       char: {},
       houseNames: [],
-      isHouseFetching: true
+      isHouseFetching: true,
+      isCharPropsFetching: true
     };
   }
 
@@ -72,20 +84,30 @@ export class CharCardByUrl extends React.Component {
     console.log(this.props.match);
     getItem(API_URL + "/characters/" + this.props.match.params.id.replace(":", "")).then(char => {
       getHouses(char).then(houseNames => {
-        this.setState({ houseNames: houseNames, isHouseFetching: false, char: char });
+        this.setState({
+          houseNames: houseNames,
+          isHouseFetching: false,
+          isCharPropsFetching: false,
+          char: char
+        });
       });
     });
   }
 
   render() {
-    const { char, houseNames, isHouseFetching } = this.state;
+    const { char, houseNames, isHouseFetching, isCharPropsFetching } = this.state;
 
     return (
       <Fragment>
         <Link to={`/characters/${this.props.currentPage}`} className={"breadcrumb"}>
           Home
         </Link>
-        <CharProps charProps={char} houseNames={houseNames} isHouseFetching={isHouseFetching} />
+        <CharProps
+          charProps={char}
+          houseNames={houseNames}
+          isHouseFetching={isHouseFetching}
+          isCharPropsFetching={isCharPropsFetching}
+        />
       </Fragment>
     );
   }

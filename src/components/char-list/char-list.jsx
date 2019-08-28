@@ -47,7 +47,6 @@ export class CharList extends React.Component {
   };
 
   render() {
-    console.log(this.prevPage);
     const { isFetching, data } = this.state;
     const { resultsPerPage } = this.props;
 

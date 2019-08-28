@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 function CharacterLink(props) {
   const [character, setcharacter] = useState(null);
   const characterId = props.character.replace(API_URL + "/characters/", "");
+  console.log(characterId);
 
   useEffect(() => {
     const abortController = new AbortController();
